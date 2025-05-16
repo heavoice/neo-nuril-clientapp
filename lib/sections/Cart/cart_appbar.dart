@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
-import 'package:solar_icons/solar_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import '../settings/constant.dart';
+import '../../settings/constant.dart';
 
-class AppBarCustom extends StatelessWidget implements PreferredSizeWidget {
-  final Map<String, GlobalKey> sectionMap;
-
-  const AppBarCustom({
+class CartAppbar extends StatelessWidget implements PreferredSizeWidget {
+  const CartAppbar({
     super.key,
-    required this.sectionMap,
   });
 
   @override
@@ -18,6 +14,7 @@ class AppBarCustom extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return AppBar(
       toolbarHeight: 100,
       leadingWidth: double.infinity,
@@ -31,11 +28,21 @@ class AppBarCustom extends StatelessWidget implements PreferredSizeWidget {
             children: [
               Builder(
                 builder: (BuildContext context) {
-                  return IconButton(
-                    onPressed: () => Scaffold.of(context).openDrawer(),
-                    icon: const Image(
-                      image: Svg('assets/img/neo-nuril.svg'),
-                    ),
+                  return Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          if (screenWidth < 1000) {
+                            Scaffold.of(context).openDrawer();
+                          } else {
+                            Navigator.pushNamed(context, '/home');
+                          }
+                        },
+                        icon: const Image(
+                          image: Svg('assets/img/neo-nuril.svg'),
+                        ),
+                      ),
+                    ],
                   );
                 },
               ),
@@ -44,14 +51,8 @@ class AppBarCustom extends StatelessWidget implements PreferredSizeWidget {
                         DeviceScreenType.mobile &&
                     sizingInformation.deviceScreenType !=
                         DeviceScreenType.tablet) {
-                  return Row(
-                    children: [
-                      _buildNavItem('About'),
-                      _buildNavItem('Product'),
-                      _buildNavItem('Benefactor'),
-                      _buildNavItem(
-                          'Contact'), // Optional: tambahkan key-nya nanti
-                    ],
+                  return const Row(
+                    children: [],
                   );
                 }
                 return const SizedBox.shrink();
@@ -83,13 +84,6 @@ class AppBarCustom extends StatelessWidget implements PreferredSizeWidget {
                     tablet: (_) => const SizedBox.shrink(),
                   ),
                   const SizedBox(width: 16),
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/cart');
-                    },
-                    icon: const Icon(SolarIconsOutline.bag4),
-                    color: AppColors.primaryColor,
-                  ),
                 ],
               ),
             ],
@@ -106,16 +100,7 @@ class AppBarCustom extends StatelessWidget implements PreferredSizeWidget {
         highlightColor: Colors.transparent,
         splashColor: Colors.transparent,
         hoverColor: const Color.fromRGBO(0, 0, 0, 0),
-        onTap: () {
-          final key = sectionMap[text];
-          if (key?.currentContext != null) {
-            Scrollable.ensureVisible(
-              key!.currentContext!,
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeInOut,
-            );
-          }
-        },
+        onTap: () {},
         child: Text(
           text,
           style: GoogleFonts.montserrat(

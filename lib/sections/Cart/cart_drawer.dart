@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:solar_icons/solar_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../settings/constant.dart';
+import '../../settings/constant.dart';
 
-class CustomDrawer extends StatelessWidget {
-  final Map<String, GlobalKey> sectionMap;
-  const CustomDrawer({super.key, required this.sectionMap});
+class CartDrawer extends StatelessWidget {
+  const CartDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -72,16 +71,7 @@ class CustomDrawer extends StatelessWidget {
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       hoverColor: const Color.fromRGBO(0, 0, 0, 0),
-      onTap: () {
-        final key = sectionMap[title];
-        if (key?.currentContext != null) {
-          Scrollable.ensureVisible(
-            key!.currentContext!,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.easeInOut,
-          );
-        }
-      },
+      onTap: () {},
       child: ListTile(
         leading: Icon(icon, color: AppColors.primaryColor),
         title: Text(
